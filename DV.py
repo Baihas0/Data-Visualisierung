@@ -6,14 +6,27 @@ import seaborn as sns
 file_path = 'C:\\Users\\kreny\\Downloads\\data.csv'
 data = pd.read_csv(file_path)
 
-
 selected_countries = ['Austria', 'Germany', 'Italy', 'France']
 filtered_data = data[data['country'].isin(selected_countries)]
 grouped_data = filtered_data.groupby(['country', 'year_week']).agg({'new_cases': 'sum'}).reset_index()
 grouped_data['new_cases_millions'] = grouped_data['new_cases'] / 1_000_000
 
+colors = {
+    'Austria': '#377eb8',  
+    'Germany': '#ff7f00',  
+    'Italy': '#4daf4a',    
+    'France': '#e41a1c'    
+}
+
 plt.figure(figsize=(15, 8))
-sns.lineplot(data=grouped_data, x='year_week', y='new_cases_millions', hue='country', marker='o')
+sns.lineplot(
+    data=grouped_data,
+    x='year_week',
+    y='new_cases_millions',
+    hue='country',
+    marker='o',
+    palette=colors  
+)
 
 plt.title('Entwicklung der COVID-19-Fallzahlen im Ländervergleich (in Millionen)')
 plt.xlabel('Jahr und Woche')
